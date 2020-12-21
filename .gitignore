@@ -1,6 +1,6 @@
 # IDE
 .vscode
 
-# Phyton
-venv/
-**/__pycache__
+# Rust
+/target
+
