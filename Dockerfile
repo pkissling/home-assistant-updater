@@ -1,12 +1,11 @@
-FROM python:3-alpine3.12
+FROM rust:latest as builder
+WORKDIR /usr/src/docker-compose-updater
+COPY src/ src/
+COPY Cargo.toml .
+RUN rustup update nightly
+RUN rustup override set nightly
+RUN cargo install --path .
 
-RUN apk update
-RUN apk add --no-cache docker-cli docker-compose
-
-COPY ./app /app
-WORKDIR /app
-RUN pip install -r requirements.txt
-
-EXPOSE 8080/tcp
-
-CMD ["flask", "run", "-h", "0.0.0.0", "-p", "5000"]
+FROM debian:buster-slim
+COPY --from=builder /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/
+CMD ["docker-compose-updater"]
