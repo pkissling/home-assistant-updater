@@ -17,6 +17,6 @@ RUN rustup update nightly
 RUN rustup override set nightly
 RUN cargo install --offline --path .
 
-FROM docker:buster-slim
+FROM docker:latest
 COPY --from=cargo-install /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/
 CMD ["docker-compose-updater"]
