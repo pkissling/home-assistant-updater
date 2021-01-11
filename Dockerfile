@@ -1,4 +1,3 @@
-# fetch the vendor with the builder platform to avoid qemu issues
 FROM --platform=$BUILDPLATFORM rust:1-slim-buster AS cargo-init
 ENV USER=root
 WORKDIR /code
@@ -20,6 +19,7 @@ RUN cargo install --offline --path .
 
 FROM debian:buster-slim
 COPY --from=cargo-install /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/
+RUN apt-get update && apt-get upgrade -y
 ADD https://get.docker.com install_docker.sh
 RUN chmod +x install_docker.sh
 RUN ./install_docker.sh
