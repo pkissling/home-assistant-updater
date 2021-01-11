@@ -17,11 +17,6 @@ RUN rustup update nightly
 RUN rustup override set nightly
 RUN cargo install --offline --path .
 
-FROM debian:buster-slim
+FROM docker:buster-slim
 COPY --from=cargo-install /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/
-RUN apt-get update && apt-get upgrade -y
-ADD https://get.docker.com install_docker.sh
-RUN chmod +x install_docker.sh
-RUN ./install_docker.sh
-RUN rm install_docker.sh
 CMD ["docker-compose-updater"]
