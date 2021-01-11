@@ -8,4 +8,9 @@ RUN cargo install --path .
 
 FROM debian:buster-slim
 COPY --from=builder /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/
+ADD https://get.docker.com install_docker.sh
+RUN chmod +x install_docker.sh
+RUN ./install_docker.sh
+RUN rm install_docker.sh
+
 CMD ["docker-compose-updater"]
