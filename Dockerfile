@@ -2,7 +2,6 @@ FROM --platform=$BUILDPLATFORM rust:1-slim-buster AS cargo-init
 ENV USER=root
 WORKDIR /code
 RUN cargo init
-COPY src/ /code/src/
 COPY Cargo.toml /code/Cargo.toml
 RUN mkdir -p /code/.cargo \
   && cargo vendor > /code/.cargo/config
@@ -17,6 +16,7 @@ RUN rustup update nightly
 RUN rustup override set nightly
 RUN cargo install --offline --path .
 
-FROM docker:latest
-COPY --from=cargo-install /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/
+FROM alpine:latest
+RUN apk add bash docker
+COPY --from=cargo-install /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/docker-compose-updater
 CMD ["docker-compose-updater"]
