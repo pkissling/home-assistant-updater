@@ -6,7 +6,6 @@ RUN rustup update nightly
 RUN rustup override set nightly
 RUN cargo install --path .
 
-FROM alpine:latest
-RUN apk add bash docker
+FROM debian:buster-slim
 COPY --from=cargo-install /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/docker-compose-updater
 CMD ["docker-compose-updater"]
