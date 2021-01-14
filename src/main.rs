@@ -26,6 +26,7 @@ fn main() {
 
 
     // TODo docker system prune -a
+    // TODO container not gracefully stopping!
     rocket::custom(config)
         .mount(base_url, routes)
         .launch();

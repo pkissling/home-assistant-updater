@@ -1,6 +1,3 @@
-use std::process::Output;
-use std::str;
-
 use crate::from_request::api_key::ApiKey;
 use crate::services::shell;
 
@@ -46,28 +43,6 @@ pub struct HttpStatusCode {
 
 impl HttpStatusCode {
     pub fn new(value: i16, msg: String) -> Self {
-        HttpStatusCode { value, msg }
-    }
-}
-
-impl From<Output> for HttpStatusCode {
-    fn from(o: Output) -> HttpStatusCode {
-        let msg = match o.status.success() {
-            true => {
-                if !o.stdout.is_empty() {
-                    str::from_utf8(&o.stdout).unwrap().to_string()
-                } else {
-                    String::from("success")
-                }
-            }
-            false => str::from_utf8(&o.stderr).unwrap().to_string()
-        };
-
-        let value = match o.status.success() {
-            true => 200,
-            false => 500
-        };
-
         HttpStatusCode { value, msg }
     }
 }
