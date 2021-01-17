@@ -16,8 +16,10 @@ COPY Cargo.toml /code/Cargo.toml
 COPY Cargo.lock /code/Cargo.lock
 RUN rustup update nightly
 RUN rustup override set nightly
-RUN cargo install --offline --path .
+RUN rustup target add x86_64-unknown-linux-musl
+RUN cargo install --target=x86_64-unknown-linux-musl --offline --path .
 
-FROM debian:buster-slim
+FROM alpine:3
+RUN apk update && apk add --no-cache docker-cli
 COPY --from=cargo-install /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/docker-compose-updater
 CMD ["docker-compose-updater"]
