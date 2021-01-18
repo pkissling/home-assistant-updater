@@ -10,6 +10,7 @@ extern crate rocket;
 
 use crate::config::env_vars;
 use rocket::config::{Config, Environment};
+use services::shell;
 
 fn main() {
 
@@ -32,6 +33,12 @@ fn main() {
         .launch();
 }
 
-fn ensure_preconditions() {
+
+async fn ensure_preconditions() {
+    // API_KEY must be set
     env_vars::expected_api_key();
+
+    // docker must be installed
+    shell::exec("docker version").expect("docker cli not installed");
+    shell::exec("docker ps").expect("unable to access docker.sock");
 }

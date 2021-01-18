@@ -36,6 +36,7 @@ fn container_exists(container_name: &String) -> Result<String, HttpStatusCode> {
     shell::exec(&cmd)
 }
 
+#[derive(Debug)]
 pub struct HttpStatusCode {
     value: i16,
     msg: String,

@@ -4,6 +4,7 @@ use crate::routes::update_container::HttpStatusCode;
 
 pub fn exec(cmd: &str) -> Result<String, HttpStatusCode> {
     println!("exec: {}", cmd);
+    let cmd = format!("{} > /dev/null", cmd);
     let output = Command::new("sh")
         .arg("-c")
         .arg(cmd)
