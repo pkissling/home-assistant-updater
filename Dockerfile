@@ -20,7 +20,7 @@ RUN cargo install --offline --path .
 
 FROM debian:buster-slim
 RUN apt-get update
-ADD https://download.docker.com/linux/debian/dists/buster/pool/stable/amd64/docker-ce-cli_20.10.2~3-0~debian-buster_amd64.deb /tmp/docker-ce-cli.deb
+ADD https://download.docker.com/linux/debian/dists/buster/pool/stable/armhf/docker-ce-cli_20.10.2~3-0~debian-buster_armhf.deb /tmp/docker-ce-cli.deb
 RUN dpkg -i /tmp/docker-ce-cli.deb
 RUN rm /tmp/docker-ce-cli.deb
 COPY --from=cargo-install /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/docker-compose-updater
