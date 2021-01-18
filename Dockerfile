@@ -20,11 +20,8 @@ RUN cargo install --offline --path .
 
 FROM debian:buster-slim
 RUN apt-get update
-RUN apt-get -y install apt-transport-https ca-certificates curl gnupg2 software-properties-common
-RUN echo $(lsb_release -cs)
-RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-RUN apt-get update
-RUN apt-get install -y docker-ce docker-ce-cli containerd.io
+ADD https://download.docker.com/linux/debian/dists/buster/pool/stable/amd64/docker-ce-cli_20.10.2~3-0~debian-buster_amd64.deb /tmp/docker-ce-cli.deb
+RUN dpkg -i /tmp/docker-ce-cli.deb
+RUN rm /tmp/docker-ce-cli.deb
 COPY --from=cargo-install /usr/local/cargo/bin/docker-compose-updater /usr/local/bin/docker-compose-updater
-CMD ["docker-compose-updater"]
+ENTRYPOINT ["docker-compose-updater"]
